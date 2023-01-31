@@ -21,12 +21,12 @@
 /prodpersist            emmc              /dev/block/bootdevice/by-name/prodpersist     flags=backup=1;flashimg=1
 
 # Dynamic partitions list
-/super                  emmc              /dev/block/bootdevice/by-name/super           flags=backup=1;display="Super";flashimg=1
+/super                  auto              /dev/block/bootdevice/by-name/super           flags=backup=1;display="Super";flashimg=1
 /system                 auto              /dev/block/bootdevice/by-name/system          display="System"
-/vendor                 ext4              /dev/block/bootdevice/by-name/vendor          display="Vendor"
+/vendor                 auto              /dev/block/bootdevice/by-name/vendor          display="Vendor"
 /product                auto              /dev/block/bootdevice/by-name/product         display="Product"
-/system_ext             ext4              /dev/block/bootdevice/by-name/system_ext      display="System_ext"
+/system_ext             auto              /dev/block/bootdevice/by-name/system_ext      display="System_ext"
 
 # Internal , OTA & external storage
 /data                  auto               /dev/block/bootdevice/by-name/userdata                        flags=fileencryption=ice:aes-256-cts
-# /usb-otg               auto               /dev/block/sdg1                         /dev/block/sdg        flags=storage;wipeingui;removable
+/usb-otg               auto               /dev/block/sdg1                         /dev/block/sdg        flags=storage;wipeingui;removable
