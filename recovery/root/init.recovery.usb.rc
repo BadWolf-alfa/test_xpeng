@@ -67,6 +67,7 @@ on property:ro.boot.usbconfigfs=false
 on property:ro.boot.usbcontroller=*
     setprop sys.usb.controller ${ro.boot.usbcontroller}
     setprop vendor.usb.controller ${sys.usb.controller}
+    write /sys/class/udc/${ro.boot.usbcontroller}/device/../mode peripheral
 
 on property:sys.usb.ffs.ready=1
     mkdir /config/usb_gadget/g1/configs/b.1 0777 shell shell
