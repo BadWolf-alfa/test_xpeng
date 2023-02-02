@@ -37,7 +37,8 @@ BUILD_BROKEN_MISSING_REQUIRED_MODULES := true
 RELAX_USES_LIBRARY_CHECK=true
 
 # Kernel
-BOARD_KERNEL_CMDLINE := twrpfastboot=1
+VENDOR_CMDLINE := "console=ttyMSM0,115200n8 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 loop.max_part=7 cgroup.memory=nokmem,nosocket reboot=panic_warm androidboot.init_fatal_reboot_target=recovery androidboot.selinux=permissive"
+#BOARD_KERNEL_CMDLINE := twrpfastboot=1
 BOARD_BOOTIMG_HEADER_VERSION := 3
 BOARD_KERNEL_CMDLINE := twrpfastboot=1 buildvariant=eng
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
@@ -48,6 +49,7 @@ TARGET_KERNEL_SOURCE := kernel/motorola/xpeng
 
 # Kernel - prebuilt
 TARGET_FORCE_PREBUILT_KERNEL := true
+BOARD_MKBOOTIMG_ARGS += --vendor_cmdline $(VENDOR_CMDLINE)
 ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 endif
@@ -88,12 +90,14 @@ TREBLE_PARTITIONS := vendor
 BOARD_PARTITION_LIST := product system system_ext vendor
 BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
 BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := product system system_ext vendor
+BOARD_ROOT_EXTRA_FOLDERS := bluetooth dsp firmware persist
 BOARD_USES_PRODUCTIMAGE := true
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
 # Recovery
 BOARD_USES_RECOVERY_AS_BOOT := true
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 BOARD_HAS_LARGE_FILESYSTEM := true
 TW_ENABLE_BLKDISCARD := true
 BOARD_SUPPRESS_SECURE_ERASE := true
@@ -106,25 +110,25 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     libion \
     libpcrecpp \
     libxml2
-    
-TW_OVERRIDE_SYSTEM_PROPS := \
-    "ro.build.date.utc;ro.bootimage.build.date.utc=ro.build.date.utc;ro.odm.build.date.utc=ro.build.date.utc;ro.product.build.date.utc=ro.build.date.utc;ro.system.build.date.utc=ro.build.date.utc;ro.system_ext.build.date.utc=ro.build.date.utc;ro.vendor.build.date.utc=ro.build.date.utc;ro.build.product;ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental;ro.product.device=ro.product.system.device;ro.product.model=ro.product.system.model;ro.product.name=ro.product.system.name"
-
 
 # Use mke2fs to create ext4 images
 TARGET_USES_MKE2FS := true
 
-# Encryption
-PLATFORM_SECURITY_PATCH := 2099-12-31
-VENDOR_SECURITY_PATCH := 2099-12-31
-PLATFORM_VERSION := 16.1.0
+# Crypto
+BOARD_USES_QCOM_FBE_DECRYPTION := true
+BOARD_USES_METADATA_PARTITION := true
+PLATFORM_VERSION := 13
 PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
+PLATFORM_SECURITY_PATCH := 2099-12-31
+VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
+BOOT_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
-BOARD_USES_METADATA_PARTITION := true
-BOARD_USES_QCOM_FBE_DECRYPTION := true
+TW_USE_FSCRYPT_POLICY := 2
 
+# Network
+BUILD_BROKEN_USES_NETWORK := true
 # Extras
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
@@ -133,6 +137,8 @@ TW_INCLUDE_REPACKTOOLS := true
 
 # TWRP specific build flags
 TARGET_RECOVERY_QCOM_RTC_FIX := true
+RECOVERY_SDCARD_ON_DATA := true
+TW_BACKUP_EXCLUSIONS := /data/fonts
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
 TW_THEME := portrait_hdpi
@@ -145,7 +151,7 @@ TW_BATTERY_SYSFS_WAIT_SECONDS := 5
 TW_EXTRA_LANGUAGES := true
 TW_HAS_EDL_MODE := true
 TW_INCLUDE_NTFS_3G := true
-TW_NO_BIND_SYSTEM := true
+#TW_NO_BIND_SYSTEM := true
 TW_NO_EXFAT_FUSE := true
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_NO_SCREEN_BLANK := true
