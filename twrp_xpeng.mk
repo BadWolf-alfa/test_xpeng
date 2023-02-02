@@ -8,6 +8,7 @@
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/twrp/config/common.mk)
 
+PRODUCT_RELEASE_NAME := xpeng
 
 PRODUCT_DEVICE := xpeng
 PRODUCT_NAME := twrp_xpeng

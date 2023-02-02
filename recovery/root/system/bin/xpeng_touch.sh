@@ -21,12 +21,9 @@ insmod $module_path/sensors_class.ko
 insmod $module_path/utags.ko
 insmod $module_path/nova_0flash_mmi.ko
 insmod $module_path/touchscreen_mmi.ko
-setprop sys.usb.config true
     # Load ADSP firmware for PMIC
     wait /sys/kernel/boot_adsp/boot
     write /sys/kernel/boot_adsp/boot 1
-    wait /sys/class/power_supply/mmi_battery
-    start health-hal-2-1
 cd $firmware_path
 touch_product_string=$(ls $touch_class_path)
 echo "novatek"

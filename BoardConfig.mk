@@ -37,7 +37,6 @@ BUILD_BROKEN_MISSING_REQUIRED_MODULES := true
 RELAX_USES_LIBRARY_CHECK=true
 
 # Kernel
-#VENDOR_CMDLINE := "console=ttyMSM0,115200n8 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 loop.max_part=7 cgroup.memory=nokmem,nosocket reboot=panic_warm androidboot.init_fatal_reboot_target=recovery androidboot.selinux=permissive"
 BOARD_KERNEL_CMDLINE := twrpfastboot=1 androidboot.usbcontroller=a600000.dwc3 androidboot.selinux=permissive
 BOARD_BOOTIMG_HEADER_VERSION := 3
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
@@ -57,6 +56,11 @@ TARGET_BOARD_PLATFORM := lahaina
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno660
 TARGET_USES_HARDWARE_QCOM_BOOTCTRL := true
 QCOM_BOARD_PLATFORMS += lahaina
+
+#Init
+TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_lahaina
+TARGET_RECOVERY_DEVICE_MODULES := libinit_lahaina
+TARGET_PLATFORM_DEVICE_BASE := /devices/soc/
 
 # fstab
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
